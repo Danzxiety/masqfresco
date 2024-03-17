@@ -43,7 +43,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['user_nombre'] = $user['nombre'];
         $_SESSION['user_apellido'] = $user['apellido'];
         $_SESSION['user_mail'] = $user['correo_electronico'];
-        echo "<script>javascript:history.back();</script>";
+
+
+          $nuevaURL = 'https://www.masqfresco.com/';
+header('Location: ' . $nuevaURL);
+
         
     } else {
         echo "<script>javascript:history.back();</script>";
