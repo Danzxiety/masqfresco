@@ -16,7 +16,6 @@ if ($conn->connect_error) {
 
 
 <?php
-// Verifica si el formulario fue enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if ($_POST["form_name"] == "form_login") {
     // Obtén los datos del usuario
@@ -43,6 +42,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['user_nombre'] = $user['nombre'];
         $_SESSION['user_apellido'] = $user['apellido'];
         $_SESSION['user_mail'] = $user['correo_electronico'];
+
+        // Verifica si las variables de sesión se establecieron correctamente
+        if(isset($_SESSION['user_id']) && isset($_SESSION['user_nombre']) && isset($_SESSION['user_apellido']) && isset($_SESSION['user_mail'])){
+          echo 'Las variables de sesión se establecieron correctamente.';
+        } else {
+          echo 'Hubo un problema al establecer las variables de sesión.';
+        }
+
         echo "<script>javascript:history.back();</script>";
         
     } else {
@@ -55,6 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } 
 }}
 ?>
+
 
 
 <?php
