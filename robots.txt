@@ -1,0 +1,14 @@
+User-agent: *
+Disallow: https://masqfresco.com/index
+Disallow: https://masqfresco.com/terms
+Disallow: https://masqfresco.com/details
+Disallow: https://masqfresco.com/profile
+Disallow: https://masqfresco.com/dashboard029
+Disallow: https://masqfresco.com/panel_delivery
+Disallow: https://masqfresco.com/print
+Disallow: https://masqfresco.com/review
+Disallow: https://masqfresco.com/checkout
+Disallow: https://masqfresco.com/callback_payment
+Disallow: https://masqfresco.com/funtions
+Disallow: https://masqfresco.com/search_product
+Disallow: https://masqfresco.com/login_admin
