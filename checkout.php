@@ -42,7 +42,7 @@ if ($num_productos == 0) {
 }
 
 ?>
-    <script src="https://js.stripe.com/v3/"></script>
+
 
 
 <?php
@@ -457,7 +457,7 @@ if ($result->num_rows > 0) {
                 echo "No se encontraron productos en el carrito"; // Imprimir mensaje de depuración
             }
        
-            echo "<script>window.location.href = 'paid.php';</script>";
+            echo "<script>window.location.href = 'token.php?checkout_id=$id_check_out';</script>";
             exit;
   
         } else {
@@ -850,7 +850,7 @@ if (isset($_SESSION['user_id'])) {
         <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page.-->
         <div class="navbar-sticky bg-light py-0">
           <div class="navbar navbar-expand-lg navbar-light py-0">
-            <div class="container"><a class="navbar-brand d-none d-sm-flex me-3 flex-shrink-0" href="https://www.masqfresco.com/"> <img width="50px" src="https://www.masqfresco.com/img/logo.svg" alt="Logo"> <span style="font-family: 'Kalam', cursive;" class="h4 fw-bold my-auto ms-2">Más Q'Fresco</span></a><a class="navbar-brand d-sm-none me-2" href="https://www.masqfresco.com/"><img src="https://www.masqfresco.com/img/logo.svg" width="60" alt="Logo"></a>
+            <div class="container"><a class="navbar-brand d-none d-sm-flex me-3 flex-shrink-0" href="https://masqfresco.com/"> <img width="50px" src="https://masqfresco.com/img/logo.svg" alt="Logo"> <span style="font-family: 'Kalam', cursive;" class="h4 fw-bold my-auto ms-2">Más Q'Fresco</span></a><a class="navbar-brand d-sm-none me-2" href="https://masqfresco.com/"><img src="https://masqfresco.com/img/logo.svg" width="60" alt="Logo"></a>
               <!-- Search-->
               <form action="search_product" method="get">
               <div class="input-group  d-none d-lg-flex flex-nowrap"><i class="ci-search position-absolute top-50 start-0 translate-middle-y ms-3"></i>
@@ -1171,17 +1171,17 @@ while ($row = $result->fetch_assoc()) { ?>
                 </ul>
                 <!-- Primary menu-->
                 <ul class="navbar-nav">
-                  <li class="nav-item"><a class="nav-link" href="https://www.masqfresco.com">Inicio</a>
+                  <li class="nav-item"><a class="nav-link" href="https://masqfresco.com">Inicio</a>
                    
                   </li>
-                  <li class="nav-item"><a class="nav-link" href="https://www.masqfresco.com/products">Productos</a>
+                  <li class="nav-item"><a class="nav-link" href="https://masqfresco.com/products">Productos</a>
                   </li>
 
                   <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside">Cuenta</a>
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="#signin-modal" data-bs-toggle="modal">Iniciar Sesión / Registrarse</a></li>
                      
-                      <li><a class="dropdown-item" href="https://www.masqfresco.com/profile">Ver perfil</a></li>
+                      <li><a class="dropdown-item" href="https://masqfresco.com/profile">Ver perfil</a></li>
               
                     </ul>
                   </li>
@@ -1189,7 +1189,7 @@ while ($row = $result->fetch_assoc()) { ?>
                     <ul class="dropdown-menu">
 
 
-                      <li><a class="dropdown-item" href="https://www.masqfresco.com/terms">Términos y condiciones</a></li>
+                      <li><a class="dropdown-item" href="https://masqfresco.com/terms">Términos y condiciones</a></li>
                     
                     </ul>
                   </li>
@@ -1662,15 +1662,15 @@ if (isset($_SESSION['user_id'])) {
             <div class="widget widget-links widget-light pb-2 mb-4">
               <h2 class="widget-title text-light">Enlaces</h2>
               <ul class="widget-list">
-                <li class="widget-list-item"><a class="widget-list-link" href="https://www.masqfresco.com/profile">Mi cuenta</a></li>
-                <li class="widget-list-item"><a class="widget-list-link" href="https://www.masqfresco.com/products">Productos</a></li>
+                <li class="widget-list-item"><a class="widget-list-link" href="https://masqfresco.com/profile">Mi cuenta</a></li>
+                <li class="widget-list-item"><a class="widget-list-link" href="https://masqfresco.com/products">Productos</a></li>
                 </ul>
             </div>
             <div class="widget widget-links widget-light pb-2 mb-4">
               <h2 class="widget-title text-light">Nosotros</h2>
               <ul class="widget-list">
       
-                <li class="widget-list-item"><a class="widget-list-link" href="https://www.masqfresco.com/terms">Términos de uso</a></li>
+                <li class="widget-list-item"><a class="widget-list-link" href="https://masqfresco.com/terms">Términos de uso</a></li>
       
               
               </ul>
