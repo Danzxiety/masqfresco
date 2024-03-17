@@ -1,0 +1,19 @@
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
+
+ErrorDocument 404 /error/404.php
+Options -Indexes
+ErrorDocument 403 /error/404.php
+
+<FilesMatch "\.ini$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^(.*)$ $1.php [NC,L]
+</IfModule>
