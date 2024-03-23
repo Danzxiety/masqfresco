@@ -13,52 +13,49 @@ if ($conn->connect_error) {
 ?>
 
 
-
-
 <?php
-// Verifica si el formulario fue enviado
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  if ($_POST["form_name"] == "form_login") {
-    // Obtén los datos del usuario
-    $correo_electronico = $_POST['correo_electronico'];
-    $contrasena = $_POST['contrasena'];
 
-    // Prepara la consulta SQL
-    $stmt = $conn->prepare("SELECT * FROM usuarios WHERE correo_electronico = ?");
-    $stmt->bind_param("s", $correo_electronico);
-    
-    // Ejecuta la consulta
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    // Verifica si el usuario existe en la base de datos
-    if ($result->num_rows > 0) {
-      // Obtén los datos del usuario
-      $user = $result->fetch_assoc();
-      
-      // Verifica si la contraseña es correcta
-      if (password_verify($contrasena, $user['contrasena'])) {
-        // Guarda los datos del usuario en la sesión
-        $_SESSION['user_id'] = $user['id_user'];
-        $_SESSION['user_nombre'] = $user['nombre'];
-        $_SESSION['user_apellido'] = $user['apellido'];
-        $_SESSION['user_mail'] = $user['correo_electronico'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_POST["form_name"] == "form_login") {
+        // Recoge los datos del formulario
+        $correo_electronico = mysqli_real_escape_string($conn, htmlspecialchars($_POST['correo_electronico']));
+        $contrasena = mysqli_real_escape_string($conn, htmlspecialchars($_POST['contrasena']));
 
+        if ($conn) {
+            // Verifica si el correo electrónico existe en la base de datos
+            $stmt = $conn->prepare("SELECT * FROM usuarios WHERE correo_electronico = ?");
+            $stmt->bind_param("s", $correo_electronico);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-          $nuevaURL = 'https://www.masqfresco.com/';
-header('Location: ' . $nuevaURL);
+            if ($result->num_rows > 0) {
+                // El correo electrónico existe, ahora verifica la contraseña
+                $user = $result->fetch_assoc();
 
-        
-    } else {
-        echo "<script>javascript:history.back();</script>";
-      } 
-        
+                if (password_verify($contrasena, $user['contrasena'])) {
+                    // La contraseña es correcta, inicia la sesión
+                    $_SESSION['user_id'] = $user['id_user'];
+                    $_SESSION['user_nombre'] = $user['nombre'];
+                    $_SESSION['user_apellido'] = $user['apellido'];
+                    $_SESSION['user_mail'] = $user['correo_electronico'];
 
-     } else {
-      echo "<script>javascript:history.back();</script>";
-    } 
-}}
+                    // Redirige al usuario a 'https://www.masqfresco.com/'
+                    header('Location: https://www.masqfresco.com/');
+                    exit;
+                } else {
+                    echo "<script>javascript:history.back();</script>";
+                }
+            } else {
+                echo "<script>javascript:history.back();</script>";
+            }
+            
+        } else {
+            echo "No se pudo conectar a la base de datos.";
+        }
+    }
+}
 ?>
+
 
 
 <?php
