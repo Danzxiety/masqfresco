@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 
 
 <?php
-
+// Comprueba si el formulario ha sido enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_POST["form_name"] == "form_login") {
         // Recoge los datos del formulario
@@ -39,14 +39,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['user_apellido'] = $user['apellido'];
                     $_SESSION['user_mail'] = $user['correo_electronico'];
 
-                    // Redirige al usuario a 'https://www.masqfresco.com/'
-                    header('Location: https://www.masqfresco.com/');
-                    exit;
+                    // Muestra un mensaje de alerta y luego redirige al usuario
+                    echo "<script>alert('Inicio de sesión exitoso.'); window.location.href='https://www.masqfresco.com/';</script>";
                 } else {
-                    echo "<script>javascript:history.back();</script>";
+                    // Muestra un mensaje de alerta y luego redirige al usuario a la página anterior
+                    echo "<script>alert('Contraseña incorrecta.'); history.back();</script>";
                 }
             } else {
-                echo "<script>javascript:history.back();</script>";
+                // Muestra un mensaje de alerta y luego redirige al usuario a la página anterior
+                echo "<script>alert('El correo electrónico no existe.'); history.back();</script>";
             }
             
         } else {
@@ -55,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 
 
 
