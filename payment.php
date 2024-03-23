@@ -823,13 +823,59 @@ while ($row = $result->fetch_assoc()) { ?>
             <!-- Autor info-->
 
 
-            <center>
+            <form id="payment-form" action="charge.php" method="post">
+  <input type="text" name="name" placeholder="Your Name" required><br>
+  <input type="email" name="email" placeholder="Your Email" required><br>
+  <input type="number" name="amount" placeholder="Amount (in cents)" required><br>
+  <div id="card-element">
+    <!-- A Stripe Element will be inserted here. -->
+  </div>
 
-            <h2 class="pb-3 mb-2">Lo siento, parece que hubo un error</h2>
-            <p>Vuelva a intentarlo de nuevo, rellene correctamnete los datos de entrega. Si el problema sigue porfavor contactenos a nuestro correo <span class="text-primary">contacta@masqfresco.com</span></p>
-            <div class="w-50 pe-3"><a class="btn btn-secondary d-block w-100" href="checkout"><i class="ci-arrow-left mt-sm-0 me-1"></i><span class="d-none d-sm-inline">Volver a detalles</span><span class="d-inline d-sm-none">Volver</span></a></div>
+  <!-- Used to display form errors. -->
+  <div id="card-errors" role="alert"></div>
 
-            </center>
+  <button type="submit">Submit Payment</button>
+</form>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  var stripe = Stripe('your_publishable_key_here');
+  var elements = stripe.elements();
+
+  var card = elements.create('card');
+  card.mount('#card-element');
+
+  // Handle form submission
+  var form = document.getElementById('payment-form');
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    stripe.createToken(card).then(function(result) {
+      if (result.error) {
+        // Show error to user
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = result.error.message;
+      } else {
+        // Send the token to your server
+        stripeTokenHandler(result.token);
+      }
+    });
+  });
+
+  function stripeTokenHandler(token) {
+    // Insert the token ID into the form so it gets submitted to the server
+    var form = document.getElementById('payment-form');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'stripeToken');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+
+    // Submit the form
+    form.submit();
+  }
+</script>
+
          
           </section>
            <!-- Sidebar-->
