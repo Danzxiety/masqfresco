@@ -9,9 +9,6 @@ $conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 } 
-require_once('vendor/autoload.php');
-\Stripe\Stripe::setApiKey('sk_test_51OoVv9BBw8oYUdLYx4DVA59KwMCPHBH3MFg1u2LBXzpr2HUop3xSWspKiwt6evTAJhbikUPcivaK4RIer2ifYpZd00qRL08MJA');
-
 
 $id_usuario = $_SESSION['user_id'];
 $checkout_id = $_GET['checkout_id'];
@@ -40,6 +37,31 @@ if (!isset($_SESSION["user_id"])) {
     echo "<script>window.location.href = 'login';</script>";
     exit;
 }
+
+
+
+require_once 'vendor/autoload.php';
+require_once 'secrets.php';
+
+\Stripe\Stripe::setApiKey($stripeSecretKey);
+header('Content-Type: application/json');
+
+$YOUR_DOMAIN = 'http://masqfresco.com';
+
+$checkout_session = \Stripe\Checkout\Session::create([
+  'line_items' => [[
+    # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
+    'price' => 'price_1OsuDjBBw8oYUdLYyJ9IfWBc',
+    'quantity' => 1,
+  ]],
+  'mode' => 'payment',
+  'success_url' => $YOUR_DOMAIN . '/success.html',
+  'cancel_url' => $YOUR_DOMAIN . '/cancel.html',
+]);
+
+header("HTTP/1.1 303 See Other");
+header("Location: " . $checkout_session->url);
+
 
 
 ?>
@@ -825,58 +847,7 @@ while ($row = $result->fetch_assoc()) { ?>
             <!-- Autor info-->
 
 
-            <form id="payment-form" action="charge.php" method="post">
-  <input type="text" name="name" placeholder="Your Name" required><br>
-  <input type="email" name="email" placeholder="Your Email" required><br>
-  <input type="number" name="amount" placeholder="Amount (in cents)" required><br>
-  <div id="card-element">
-    <!-- A Stripe Element will be inserted here. -->
-  </div>
-
-  <!-- Used to display form errors. -->
-  <div id="card-errors" role="alert"></div>
-
-  <button type="submit">Submit Payment</button>
-</form>
-
-<script src="https://js.stripe.com/v3/"></script>
-<script>
-  var stripe = Stripe('pk_test_51OoVv9BBw8oYUdLYUHfpbBiiIWVc1mT47uldTHQHMSj8qGCGJhMwtkysgLwSza7VYrrvyqgsa0TipNwOm92yeHzN00dLTOQUvZ');
-  var elements = stripe.elements();
-
-  var card = elements.create('card');
-  card.mount('#card-element');
-
-  // Handle form submission
-  var form = document.getElementById('payment-form');
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    stripe.createToken(card).then(function(result) {
-      if (result.error) {
-        // Show error to user
-        var errorElement = document.getElementById('card-errors');
-        errorElement.textContent = result.error.message;
-      } else {
-        // Send the token to your server
-        stripeTokenHandler(result.token);
-      }
-    });
-  });
-
-  function stripeTokenHandler(token) {
-    // Insert the token ID into the form so it gets submitted to the server
-    var form = document.getElementById('payment-form');
-    var hiddenInput = document.createElement('input');
-    hiddenInput.setAttribute('type', 'hidden');
-    hiddenInput.setAttribute('name', 'stripeToken');
-    hiddenInput.setAttribute('value', token.id);
-    form.appendChild(hiddenInput);
-
-    // Submit the form
-    form.submit();
-  }
-</script>
+          
 
          
           </section>
