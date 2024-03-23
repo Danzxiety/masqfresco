@@ -311,12 +311,22 @@ if (isset($_SESSION['user_id'])) {
                         <input type="hidden" name="form_name" value="form_comen">
 
                           <label class="form-label" for="review-name">Nombre<span class="text-danger">*</span></label>
-                          <input class="form-control" name="nombre_cliente" type="text" value="<?php echo  $_SESSION['user_nombre'];?>" required="" id="review-name">
+                          <input class="form-control" name="nombre_cliente" type="text" value="<?php 
+if(isset($_SESSION['user_nombre'])) {
+    echo $_SESSION['user_nombre']; 
+} 
+?>
+" required="" id="review-name">
                           <div class="invalid-feedback">Please enter your name!</div><small class="form-text text-muted">Will be displayed on the comment.</small>
                         </div>
                         <div class="mb-3">
                           <label class="form-label" for="review-email">Correo<span class="text-danger">*</span></label>
-                          <input class="form-control" name="correo_cliente" type="email" value="<?php echo  $_SESSION['user_mail'];?>" required="" id="review-email">
+                          <input class="form-control" name="correo_cliente" type="email" value="<?php 
+if(isset($_SESSION['user_mail'])) {
+    echo $_SESSION['user_mail']; 
+} 
+?>
+" required="" id="review-email">
                           <div class="invalid-feedback">Please provide valid email address!</div><small class="form-text text-muted">Authentication only - we won't spam you.</small>
                         </div>
                         <div class="mb-3">
@@ -1493,7 +1503,7 @@ if ($result->num_rows > 0) {
                 </div>
                 <footer class="d-flex justify-content-left align-items-left pt-4"><img class="rounded-circle" src="img/logo.svg" width="50" alt="Logo">
                   <div class="ps-3">
-                    <h6 class="fs-sm mb-n1"><?php echo htmlspecialchars($row["nombre_cliente"]); ?></h6><span class="fs-ms text-muted opacity-75"><?php echo htmlspecialchars($row["fecha_creacion"]); ?></span>
+                    <h6 class="fs-sm mb-n1"><?php echo htmlspecialchars($row["nombre_cliente"]); ?></h6><span class="fs-ms text-muted opacity-75"></span>
                   </div>
                 </footer>
               </blockquote>
