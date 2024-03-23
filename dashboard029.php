@@ -419,8 +419,9 @@ echo $total_productos;
 $sql = "SELECT sms_c.id_user, usuarios.nombre, usuarios.rgbcolor
 FROM sms_c 
 JOIN usuarios ON sms_c.id_user = usuarios.id_user 
-GROUP BY sms_c.id_user
+GROUP BY sms_c.id_user, usuarios.nombre, usuarios.rgbcolor
 ORDER BY MAX(sms_c.fecha_sms_c) DESC";
+
 
 
 $result = $conn->query($sql);
