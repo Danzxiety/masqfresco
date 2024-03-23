@@ -30,20 +30,27 @@ if (!isset($_SESSION["user_id"])) {
     exit;
 }
 
-$ch = curl_init();
+require_once 'vendor/autoload.php';
+require_once '.secrets.php';
 
-// Establece la URL y otras opciones apropiadas
-curl_setopt($ch, CURLOPT_URL, "http://www.example.com/");
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+\Stripe\Stripe::setApiKey($stripeSecretKey);
+header('Content-Type: application/json');
 
-// Realiza la solicitud, y guarda la salida
-$output = curl_exec($ch);
+$YOUR_DOMAIN = 'https://masqfresco.com';
 
-// Muestra la salida
-echo $output;
+$checkout_session = \Stripe\Checkout\Session::create([
+  'line_items' => [[
+    # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
+    'price' => 'price_1OsuDjBBw8oYUdLYyJ9IfWBc',
+    'quantity' => 1,
+  ]],
+  'mode' => 'payment',
+  'success_url' => $YOUR_DOMAIN . '/success.html',
+  'cancel_url' => $YOUR_DOMAIN . '/cancel.html',
+]);
 
-// Cierra la sesión cURL y libera todos los recursos. Las sesiones cURL deben cerrarse manualmente.
-curl_close($ch);
+header("HTTP/1.1 303 See Other");
+header("Location: " . $checkout_session->url);
 ?>
 
 
