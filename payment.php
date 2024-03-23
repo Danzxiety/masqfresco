@@ -9,6 +9,8 @@ $conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 } 
+require_once('vendor/autoload.php');
+\Stripe\Stripe::setApiKey('sk_test_51OoVv9BBw8oYUdLYx4DVA59KwMCPHBH3MFg1u2LBXzpr2HUop3xSWspKiwt6evTAJhbikUPcivaK4RIer2ifYpZd00qRL08MJA');
 
 
 $id_usuario = $_SESSION['user_id'];
