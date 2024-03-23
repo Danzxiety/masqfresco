@@ -839,7 +839,7 @@ while ($row = $result->fetch_assoc()) { ?>
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-  var stripe = Stripe('your_publishable_key_here');
+  var stripe = Stripe('pk_test_51OoVv9BBw8oYUdLYUHfpbBiiIWVc1mT47uldTHQHMSj8qGCGJhMwtkysgLwSza7VYrrvyqgsa0TipNwOm92yeHzN00dLTOQUvZ');
   var elements = stripe.elements();
 
   var card = elements.create('card');
