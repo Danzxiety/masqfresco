@@ -30,40 +30,20 @@ if (!isset($_SESSION["user_id"])) {
     exit;
 }
 
-require_once 'vendor/autoload.php';
-require_once 'secrets.php';
+$ch = curl_init();
 
-\Stripe\Stripe::setApiKey($stripeSecretKey);
-header('Content-Type: application/json');
+// Establece la URL y otras opciones apropiadas
+curl_setopt($ch, CURLOPT_URL, "http://www.example.com/");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-$YOUR_DOMAIN = 'http://masqfresco.com';
+// Realiza la solicitud, y guarda la salida
+$output = curl_exec($ch);
 
-try {
-    $checkout_session = \Stripe\Checkout\Session::create([
-      'payment_method_types' => ['card'],
-      'line_items' => [[
-        'price_data' => [
-          'currency' => 'usd',
-          'product_data' => [
-            'name' => 'Nombre del producto',
-          ],
-          'unit_amount' => $total,
-        ],
-        'quantity' => 1,
-      ]],
-      'mode' => 'payment',
-      'success_url' => $YOUR_DOMAIN . '/success.html',
-      'cancel_url' => $YOUR_DOMAIN . '/cancel.html',
-    ]);
+// Muestra la salida
+echo $output;
 
-    header("HTTP/1.1 303 See Other");
-    header("Location: " . $checkout_session->url);
-} catch (\Stripe\Exception\ApiErrorException $e) {
-    // Manejo de errores
-    error_log("Stripe API error: " . $e->getMessage());
-    http_response_code(500);
-    echo "Ocurrió un error al crear la sesión de pago. Por favor, inténtalo de nuevo.";
-}
+// Cierra la sesión cURL y libera todos los recursos. Las sesiones cURL deben cerrarse manualmente.
+curl_close($ch);
 ?>
 
 
