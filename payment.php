@@ -13,12 +13,7 @@ if ($conn->connect_error) {
 $id_usuario = $_SESSION['user_id'];
 $checkout_id = $_GET['checkout_id'];
 
-
-$sql = "SELECT total_precio FROM check_out WHERE id_check_out = $checkout_id";
-$result = mysqli_query($conn, $sql);
-$row = mysqli_fetch_assoc($result);
-$total = $row['total_precio'] * 100;
-
+$total = 10000; // Esto representa 100.00 en dólares
 
 $sql = "SELECT * FROM usuarios WHERE id_user = $id_usuario";
 $result = mysqli_query($conn, $sql);
@@ -28,17 +23,12 @@ $apellido = $row['apellido'];
 $correo_electronico = $row['correo_electronico'];
 $numero_telefono = $row['numero_telefono'];
 
-
-
-
 // Verificar si el usuario tiene una sesión iniciada
 if (!isset($_SESSION["user_id"])) {
     // El usuario no tiene una sesión iniciada, redirigirlo a la página de inicio de sesión
     echo "<script>window.location.href = 'login';</script>";
     exit;
 }
-
-
 
 require_once 'vendor/autoload.php';
 require_once 'secrets.php';
@@ -49,9 +39,15 @@ header('Content-Type: application/json');
 $YOUR_DOMAIN = 'http://masqfresco.com';
 
 $checkout_session = \Stripe\Checkout\Session::create([
+  'payment_method_types' => ['card'],
   'line_items' => [[
-    # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
-    'price' => 'price_1OsuDjBBw8oYUdLYyJ9IfWBc',
+    'price_data' => [
+      'currency' => 'usd',
+      'product_data' => [
+        'name' => 'Nombre del producto',
+      ],
+      'unit_amount' => $total,
+    ],
     'quantity' => 1,
   ]],
   'mode' => 'payment',
@@ -61,9 +57,6 @@ $checkout_session = \Stripe\Checkout\Session::create([
 
 header("HTTP/1.1 303 See Other");
 header("Location: " . $checkout_session->url);
-
-
-
 ?>
 
 
