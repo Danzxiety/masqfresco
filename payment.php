@@ -323,7 +323,7 @@ if (isset($_SESSION['user_id'])) {
 // Obtén el ID del usuario
 $id_usuario = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT carrito.cantidad, productos.id_producto, productos.nombre, productos.descripcion, productos.precio, MAX(fotos_productos.foto_url) AS foto_url FROM carrito INNER JOIN productos ON carrito.id_producto = productos.id_producto INNER JOIN fotos_productos ON carrito.id_producto = fotos_productos.id_producto WHERE carrito.id_usuario = ? GROUP BY productos.id_producto");
+$stmt = $conn->prepare("SELECT carrito.cantidad, productos.id_producto, productos.nombre, productos.descripcion, productos.precio, MAX(fotos_productos.foto_url) AS foto_url FROM carrito INNER JOIN productos ON carrito.id_producto = productos.id_producto INNER JOIN fotos_productos ON carrito.id_producto = fotos_productos.id_producto WHERE carrito.id_usuario = ? GROUP BY carrito.cantidad, productos.id_producto, productos.nombre, productos.descripcion, productos.precio");
 $stmt->bind_param("i", $id_usuario);
 
 // Ejecuta la consulta
@@ -623,7 +623,7 @@ if (isset($_SESSION['user_id'])) {
 // Obtén el ID del usuario
 $id_usuario = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT carrito.cantidad, productos.id_producto, productos.nombre, productos.descripcion, productos.precio, MAX(fotos_productos.foto_url) AS foto_url FROM carrito INNER JOIN productos ON carrito.id_producto = productos.id_producto INNER JOIN fotos_productos ON carrito.id_producto = fotos_productos.id_producto WHERE carrito.id_usuario = ? GROUP BY productos.id_producto");
+$stmt = $conn->prepare("SELECT carrito.cantidad, productos.id_producto, productos.nombre, productos.descripcion, productos.precio, MAX(fotos_productos.foto_url) AS foto_url FROM carrito INNER JOIN productos ON carrito.id_producto = productos.id_producto INNER JOIN fotos_productos ON carrito.id_producto = fotos_productos.id_producto WHERE carrito.id_usuario = ? GROUP BY carrito.cantidad, productos.id_producto, productos.nombre, productos.descripcion, productos.precio");
 $stmt->bind_param("i", $id_usuario);
 
 // Ejecuta la consulta
