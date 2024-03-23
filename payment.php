@@ -30,7 +30,7 @@ $correo_electronico = $row['correo_electronico'];
 $numero_telefono = $row['numero_telefono'];
 
 
-<?php
+
 
 // Verificar si el usuario tiene una sesión iniciada
 if (!isset($_SESSION["user_id"])) {
