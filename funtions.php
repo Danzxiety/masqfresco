@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['user_mail'] = $user['correo_electronico'];
 
                     // Muestra un mensaje de alerta y luego redirige al usuario
-                    echo "<script>alert('Inicio de sesión exitoso.'); window.location.href='https://www.masqfresco.com/';</script>";
+                    echo "<script>window.location.href='https://masqfresco.com/';</script>";
                 } else {
                     // Muestra un mensaje de alerta y luego redirige al usuario a la página anterior
                     echo "<script>alert('Contraseña incorrecta.'); history.back();</script>";
