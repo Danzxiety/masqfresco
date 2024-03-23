@@ -38,25 +38,32 @@ header('Content-Type: application/json');
 
 $YOUR_DOMAIN = 'http://masqfresco.com';
 
-$checkout_session = \Stripe\Checkout\Session::create([
-  'payment_method_types' => ['card'],
-  'line_items' => [[
-    'price_data' => [
-      'currency' => 'usd',
-      'product_data' => [
-        'name' => 'Nombre del producto',
-      ],
-      'unit_amount' => $total,
-    ],
-    'quantity' => 1,
-  ]],
-  'mode' => 'payment',
-  'success_url' => $YOUR_DOMAIN . '/success.html',
-  'cancel_url' => $YOUR_DOMAIN . '/cancel.html',
-]);
+try {
+    $checkout_session = \Stripe\Checkout\Session::create([
+      'payment_method_types' => ['card'],
+      'line_items' => [[
+        'price_data' => [
+          'currency' => 'usd',
+          'product_data' => [
+            'name' => 'Nombre del producto',
+          ],
+          'unit_amount' => $total,
+        ],
+        'quantity' => 1,
+      ]],
+      'mode' => 'payment',
+      'success_url' => $YOUR_DOMAIN . '/success.html',
+      'cancel_url' => $YOUR_DOMAIN . '/cancel.html',
+    ]);
 
-header("HTTP/1.1 303 See Other");
-header("Location: " . $checkout_session->url);
+    header("HTTP/1.1 303 See Other");
+    header("Location: " . $checkout_session->url);
+} catch (\Stripe\Exception\ApiErrorException $e) {
+    // Manejo de errores
+    error_log("Stripe API error: " . $e->getMessage());
+    http_response_code(500);
+    echo "Ocurrió un error al crear la sesión de pago. Por favor, inténtalo de nuevo.";
+}
 ?>
 
 
