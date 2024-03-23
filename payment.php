@@ -31,7 +31,7 @@ if (!isset($_SESSION["user_id"])) {
 }
 
 require_once 'vendor/autoload.php';
-require_once '.secrets.php';
+require_once 'secrets.php';
 
 \Stripe\Stripe::setApiKey($stripeSecretKey);
 header('Content-Type: application/json');
