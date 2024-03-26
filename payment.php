@@ -30,7 +30,20 @@ if (!isset($_SESSION["user_id"])) {
     exit;
 }
 
-$total = 10000; // Esto representa 100.00 en dólares
+// Realiza una consulta SQL para obtener el total_precio del checkout_id específico
+$sql = "SELECT total_precio FROM check_out WHERE id_check_out = $checkout_id";
+$result = mysqli_query($conn, $sql);
+
+// Verifica si la consulta fue exitosa
+if ($result) {
+    // Obtiene el resultado de la consulta
+    $row = mysqli_fetch_assoc($result);
+    // Almacena el total_precio en la variable $total
+    $total = $row['total_precio'] * 100; // Multiplica por 100 porque Stripe maneja los montos en centavos
+} else {
+    // Maneja el error si la consulta no fue exitosa
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+}
 
 require_once 'vendor/autoload.php';
 require_once 'secrets.php';
@@ -45,7 +58,7 @@ $price = \Stripe\Price::create([
   'unit_amount' => $total,
   'currency' => 'usd',
   'product_data' => [
-    'name' => 'Mi producto',
+    'name' => 'MasQ'Fresco Checkout',
   ],
 ]);
 
