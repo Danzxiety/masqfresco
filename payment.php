@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 $id_usuario = $_SESSION['user_id'];
 $checkout_id = $_GET['checkout_id'];
 
-$total = 10000; // Esto representa 100.00 en dólares
+
 
 $sql = "SELECT * FROM usuarios WHERE id_user = $id_usuario";
 $result = mysqli_query($conn, $sql);
@@ -30,6 +30,8 @@ if (!isset($_SESSION["user_id"])) {
     exit;
 }
 
+$total = 10000; // Esto representa 100.00 en dólares
+
 require_once 'vendor/autoload.php';
 require_once 'secrets.php';
 
@@ -38,10 +40,22 @@ header('Content-Type: application/json');
 
 $YOUR_DOMAIN = 'https://masqfresco.com';
 
+// Crear un objeto Price de Stripe
+$price = \Stripe\Price::create([
+  'unit_amount' => $total,
+  'currency' => 'usd',
+  'product_data' => [
+    'name' => 'Mi producto',
+  ],
+]);
+
 $checkout_session = \Stripe\Checkout\Session::create([
   'line_items' => [[
-    # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
-    'price' => 'price_1OsuDjBBw8oYUdLYyJ9IfWBc',
+    'price_data' => [
+      'product' => $price->product,
+      'unit_amount' => $total,
+      'currency' => 'usd',
+    ],
     'quantity' => 1,
   ]],
   'mode' => 'payment',
@@ -51,7 +65,7 @@ $checkout_session = \Stripe\Checkout\Session::create([
 
 header("HTTP/1.1 303 See Other");
 header("Location: " . $checkout_session->url);
-?>
+
 
 
 
