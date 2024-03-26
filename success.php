@@ -4,6 +4,9 @@ require_once 'secrets.php';
 
 \Stripe\Stripe::setApiKey($stripeSecretKey);
 
+$YOUR_DOMAIN = 'https://masqfresco.com';
+
+
 // Configura el webhook
 $endpoint_secret = 'whsec_b8fb684ef14ae90b14f620fc252e9030010e3751094620afb6de4c6ed82929d8';
 
