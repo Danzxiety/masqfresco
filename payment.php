@@ -58,7 +58,7 @@ $price = \Stripe\Price::create([
   'unit_amount' => $total,
   'currency' => 'usd',
   'product_data' => [
-    'name' => 'MasQ'Fresco Checkout',
+    'name' => 'MasQFresco Checkout',
   ],
 ]);
 
