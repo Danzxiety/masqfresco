@@ -833,7 +833,7 @@ $(document).ready(function(){
                     <div class="row align-items-center">
                       <div class="col-md-6 order-md-2"><img class="d-block mx-auto" alt="Presentacion" src="img/1690584557366.png" width="60%" ></div>
                       <div class="col-lg-5 col-md-6 offset-lg-1 order-md-1 pt-4 pb-md-4 text-center text-md-start">
-                        <small>VPS</small>
+  
                         <h2 style="font-family: 'Kalam', cursive;" class="fw-light pb-1 from-bottom">Bienvenidos a</h2>
                         <h1 style="font-family: 'Kalam', cursive;" class="display-5 scale-up fw-bold delay-1">Más Q' Fresco</h1>
                         <h5 style="font-family: 'Kalam', cursive;" class="fw-light pb-3 from-bottom delay-2">Tu tienda online con productos de calidad</h5>
