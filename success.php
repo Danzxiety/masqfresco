@@ -1,3 +1,4 @@
+<?php
 require_once 'vendor/autoload.php';
 require_once 'secrets.php';
 
@@ -40,3 +41,4 @@ if ($event->type == 'checkout.session.completed') {
 
 // Responde con un código de estado 200 para indicar que el webhook se procesó correctamente
 http_response_code(200);
+?>
