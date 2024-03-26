@@ -21,13 +21,6 @@ if (!isset($_SESSION["user_id"])) {
 }
 ?>
 
-<?php
-if (!isset($_GET['bankOrderCode'])) {
-  echo "<script>window.location.href = 'https://masqfresco.com/checkout';</script>";
-    exit;
-}
-// El resto de tu código va aquí...
-?>
 
 <!DOCTYPE html>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -886,10 +879,6 @@ $(document).ready(function(){
               <center><img src="img/oc-hi-five.svg" width="120" alt=""></center>
               <h2 class="h4 mt-2 pb-3">Gracias por su compra!</h2>
               <p class="fs-sm mb-2">Su orden sera procesada lo antes posible.</p>
-              <p class="fs-sm mb-2">Ante cualquier problema con su pedido le aconsejamos que guarde su # de pedido en una nota: </p><?php
-        $bankOrderCode = $_GET['bankOrderCode'];        
-        echo "<h4>$bankOrderCode</h4>";
-        ?>
               <a class="btn btn-primary mt-3" href="index"><i class="ci-cart"></i>&nbsp;Volver a la tienda</a>
             </div>
           </div>
