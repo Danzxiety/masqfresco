@@ -3,4 +3,4 @@
 // or in a private script that does not publicly expose the source code.
 
 // This is your test secret API key.
-$stripeSecretKey = 'sk_test_51OoVv9BBw8oYUdLYx4DVA59KwMCPHBH3MFg1u2LBXzpr2HUop3xSWspKiwt6evTAJhbikUPcivaK4RIer2ifYpZd00qRL08MJA';
+$stripeSecretKey = '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';
