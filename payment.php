@@ -72,7 +72,7 @@ $checkout_session = \Stripe\Checkout\Session::create([
     'quantity' => 1,
   ]],
   'mode' => 'payment',
-  'success_url' => $YOUR_DOMAIN . '/success?chek=$checkout_id',
+  'success_url' => $YOUR_DOMAIN . "/success?check={$checkout_id}",
   'cancel_url' => $YOUR_DOMAIN . '/review?x=error',
 ]);
 
