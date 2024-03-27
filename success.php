@@ -1,47 +1,93 @@
 <?php
-require_once 'vendor/autoload.php';
-require_once 'secrets.php';
+session_start();
+include 'config.php';
 
-\Stripe\Stripe::setApiKey($stripeSecretKey);
+// Crea la conexión
+$conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
+// Verifica si la conexión es exitosa
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+} 
 
-$YOUR_DOMAIN = 'https://masqfresco.com';
+    // Obtener el ID del checkout de la URL
+    $checkout_id = $_GET['check'];
+    
+    
+
+    // Actualizar el estado del pago y guardar el bankOrderCode en la tabla check_out
+$stmt = $conn->prepare("UPDATE check_out SET estado_pago = 'Pagado' WHERE id_check_out = ?");
+$stmt->bind_param('i', $checkout_id);
+$stmt->execute();
 
 
-// Configura el webhook
-$endpoint_secret = 'whsec_b8fb684ef14ae90b14f620fc252e9030010e3751094620afb6de4c6ed82929d8';
 
-// Obtiene el payload del webhook
-$payload = @file_get_contents('php://input');
-$sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
-$event = null;
+    // Obtener los productos del checkout
+$stmt = $conn->prepare("SELECT id_producto, cantidad FROM check_out_productos WHERE id_check_out = ?");
+$stmt->bind_param('i', $checkout_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
-try {
-  $event = \Stripe\Webhook::constructEvent(
-    $payload, $sig_header, $endpoint_secret
-  );
-} catch(\UnexpectedValueException $e) {
-  // El payload no es válido, puedes responder con un error 400
-  http_response_code(400);
-  exit();
-} catch(\Stripe\Exception\SignatureVerificationException $e) {
-  // La firma del webhook no es válida, puedes responder con un error 400
-  http_response_code(400);
-  exit();
+$productos = array();
+while ($row = $result->fetch_assoc()) {
+    $productos[] = $row;
 }
 
-// Maneja el evento
-if ($event->type == 'checkout.session.completed') {
-  $session = $event->data->object;
+// Recorrer los productos y actualizar el stock
+foreach ($productos as $producto) {
+    $id_producto = $producto['id_producto'];
+    $cantidad = $producto['cantidad'];
 
-  // Aquí puedes realizar acciones basadas en la finalización de la sesión de Checkout
-  // Por ejemplo, puedes redirigir al usuario a la página de revisión
-  header('Location: ' . $YOUR_DOMAIN . '/review?session_id=' . $session->id);
-} else {
-  // Responde con un error 400 si no puedes manejar el evento
-  http_response_code(400);
-  exit();
+     // Actualizar el stock del producto
+     $stmt = $conn->prepare("UPDATE productos SET stock = stock - ? WHERE id_producto = ?");
+     $stmt->bind_param('ii', $cantidad, $id_producto);
+     $stmt->execute();
+
+
+     // Verificar si el stock del producto llegó a 0
+     $stmt = $conn->prepare("SELECT stock FROM productos WHERE id_producto = ?");
+     $stmt->bind_param('i', $id_producto);
+     $stmt->execute();
+     $result2 = $stmt->get_result();
+     if ($result2->num_rows > 0) {
+         $row2 = $result2->fetch_assoc();
+         if ($row2['stock'] == 0) {
+             // Eliminar el producto de todos los carritos de los usuarios
+             $stmt = $conn->prepare("DELETE FROM carrito WHERE id_producto = ?");
+             $stmt->bind_param('i', $id_producto);
+             $stmt->execute();
+         }
+     }
+
+
+
+
+     // Obtener el ID del usuario
+ $stmt = $conn->prepare("SELECT id_usuario FROM check_out WHERE id_check_out = ?");
+ $stmt->bind_param('i', $checkout_id);
+ $stmt->execute();
+ $result = $stmt->get_result();
+ $row = $result->fetch_assoc();
+ $id_usuario = $row['id_usuario'];
+
+ // Eliminar los datos del carrito del usuario
+ $stmt = $conn->prepare("DELETE FROM carrito WHERE id_usuario = ?");
+ $stmt->bind_param('i', $id_usuario);
+ $stmt->execute();
+ 
+
+
+
+
+       
+    echo "<script>window.location.href = 'review?x=success';</script>";
+    exit;
 }
 
-// Responde con un código de estado 200 para indicar que el webhook se procesó correctamente
-http_response_code(200);
+
+
+
+
+    $conn->close();
+
+    
 ?>
